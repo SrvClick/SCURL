@@ -7,6 +7,8 @@ class CurlRequest extends CurlOptions
     protected string $url;
     protected array $options = [];
     protected array $configs = [];
+    protected string $parameters = "";
+    protected string $method = "";
 
     public function setUrl($url){
         $this->url = $url;
@@ -19,6 +21,13 @@ class CurlRequest extends CurlOptions
             $this->ch_options[$name] = $value;
         }
     }
+    public function setParameters(string $params){
+        $this->parameters = $params;
+    }
+    public function setMethod(string $method){
+        $this->method = $method;
+    }
+
 
     public function sendRequest(): Response
     {
@@ -31,7 +40,7 @@ class CurlRequest extends CurlOptions
             CURLOPT_ENCODING => $this->ch_options['encondig'],
             CURLOPT_HTTP_VERSION => $this->ch_options['http_version'],
             CURLOPT_HTTPHEADER => $this->ch_options['header'],
-            CURLOPT_USERAGENT => $this->ch_options['follow'],
+            CURLOPT_USERAGENT => $this->ch_options['useragent'],
             CURLOPT_FOLLOWLOCATION => $this->ch_options['timeout'],
             CURLOPT_MAXREDIRS => $this->ch_options['max_redirs'],
         ];
@@ -48,10 +57,13 @@ class CurlRequest extends CurlOptions
         if (isset($this->ch_options['http_auth']) && isset($this->ch_options['http_user']) && isset($this->ch_options['http_pass'])){
             $options[CURLOPT_USERPWD] = $this->ch_options['http_user'].":".$this->ch_options['http_pass'];
         }
+        if ($this->method == "POST"){
+            $options[CURLOPT_POST] = true;
+            $options[CURLOPT_POSTFIELDS] = $this->parameters;
+        }
         if (isset($this->ch_options['custom_method']) && !empty($this->ch_options['custom_method'])){
             $options[CURLOPT_CUSTOMREQUEST] = $this->ch_options['custom_method'];
         }
-
 
 
 
@@ -64,6 +76,8 @@ class CurlRequest extends CurlOptions
         if ($cr_response === false){
             $response->setError(curl_error($ch));
         }
+
+
 
         $response->setBody($cr_response);
         $response->setStatus($cr_status);
