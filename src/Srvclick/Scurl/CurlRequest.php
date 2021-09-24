@@ -10,24 +10,28 @@ class CurlRequest extends CurlOptions
     protected string $parameters = "";
     protected string $method = "";
 
-    public function setUrl($url){
+    public function setUrl($url) : void
+    {
         $this->url = $url;
     }
-    public function setOptions(array $options){
+    public function setOptions(array $options) : void
+    {
         $this->options = $options;
     }
-    public function setConfigs(array $configs){
+    public function setConfigs(array $configs) : void
+    {
         foreach ($configs as $name => $value){
             $this->ch_options[$name] = $value;
         }
     }
-    public function setParameters(string $params){
+    public function setParameters(string $params) : void
+    {
         $this->parameters = $params;
     }
-    public function setMethod(string $method){
+    public function setMethod(string $method) : void
+    {
         $this->method = $method;
     }
-
 
     public function sendRequest(): Response
     {

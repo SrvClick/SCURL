@@ -9,14 +9,17 @@ class Response
 
     protected string $error = "";
 
-    public function setError(string $error){
+    public function setError(string $error) : void
+    {
         $this->error = $error;
     }
-    public function setBody($body){
+    public function setBody($body) : void
+    {
         $this->body = $body;
     }
 
-    public function setStatus(int $status){
+    public function setStatus(int $status) : void
+    {
         $this->status = $status;
     }
 

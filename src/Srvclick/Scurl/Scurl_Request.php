@@ -9,11 +9,13 @@ class Scurl_Request extends Request
     protected array $options = [];
     protected array $configs = [];*/
 
-    public function setOptions(array $options){
+    public function setOptions(array $options) : void
+    {
         $this->options = $options;
     }
 
-    public function setConfigs(array $configs){
+    public function setConfigs(array $configs) : void
+    {
         $this->configs = $configs;
     }
 
@@ -22,9 +24,6 @@ class Scurl_Request extends Request
     {
         return $this->curlRequest();
     }
-
-
-
 
 
 }

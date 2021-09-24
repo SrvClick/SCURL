@@ -8,13 +8,16 @@ class Request{
     protected array $options = [];
     protected array $configs = [];
     protected string $parameters = "";
-    public function setUrl($url){
+    public function setUrl($url) : void
+    {
         $this->url = $url;
     }
-    public function setMethod($method){
+    public function setMethod($method) : void
+    {
         $this->method = $method;
     }
-    public function setParameters($params){
+    public function setParameters($params) : void
+    {
          $this->parameters = is_array($params) ? http_build_query($params) : $params;
     }
 
