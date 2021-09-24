@@ -1,11 +1,8 @@
 <?php
-
 namespace Srvclick\Scurl;
 
 class Verbose
 {
-
-
     public function verbose(): void
     {
         $verbose = [

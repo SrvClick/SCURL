@@ -1,5 +1,4 @@
 <?php
-
 namespace Srvclick\Scurl;
 
 class Response

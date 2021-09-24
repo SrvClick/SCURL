@@ -59,7 +59,7 @@ class CurlRequest extends CurlOptions
         $cr_response = curl_exec($ch);
         $cr_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        $response = new Response();
+        $response = new Response;
 
         if ($cr_response === false){
             $response->setError(curl_error($ch));
