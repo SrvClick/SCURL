@@ -16,6 +16,5 @@ class CurlOptions
             'encondig' => "",
             'useragent' => 'SCURL by SrvClick',
             'header' => []
-
         ];
 }
