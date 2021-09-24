@@ -18,19 +18,4 @@ class CurlOptions
             'header' => []
 
         ];
-
-
-
-
-
-    /*protected int $max_redir = 10;
-    protected int $timeout = 30;
-    protected int $curl_version = CURL_HTTP_VERSION_1_1;
-    protected bool $return_transfer = true;
-    protected bool $ssl_verifypeer = true;
-    protected bool $follow = false;
-    protected string $encondig = "";
-    protected string $useragent = "SCURL by SrvClick";
-    protected array $header = [];*/
-
 }

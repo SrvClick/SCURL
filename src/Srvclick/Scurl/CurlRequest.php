@@ -5,7 +5,6 @@ class CurlRequest extends CurlOptions
 {
 
     protected string $url;
-
     protected array $options = [];
     protected array $configs = [];
 
@@ -49,10 +48,10 @@ class CurlRequest extends CurlOptions
         if (isset($this->ch_options['http_auth']) && isset($this->ch_options['http_user']) && isset($this->ch_options['http_pass'])){
             $options[CURLOPT_USERPWD] = $this->ch_options['http_user'].":".$this->ch_options['http_pass'];
         }
-
         if (isset($this->ch_options['custom_method']) && !empty($this->ch_options['custom_method'])){
             $options[CURLOPT_CUSTOMREQUEST] = $this->ch_options['custom_method'];
         }
+
 
 
 
