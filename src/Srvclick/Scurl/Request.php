@@ -6,7 +6,6 @@ class Request{
 
     protected string $url;
     protected string $method;
-    protected Response $response;
     protected array $options = [];
     protected array $configs = [];
 
@@ -19,14 +18,15 @@ class Request{
     }
 
 
-    protected function get(){
-        $request = new CurlGet();
+    protected function curlRequest(): Response
+    {
+        $request = new CurlRequest();
 
         $request->setConfigs($this->configs);
         $request->setOptions($this->options);
 
         $request->setUrl($this->url);
-        $this->response = $request->sendRequest();
+        return $request->sendRequest();
     }
 
 }

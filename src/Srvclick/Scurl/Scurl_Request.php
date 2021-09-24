@@ -21,14 +21,7 @@ class Scurl_Request extends Request
 
     public function Send(): Response
     {
-        if ($this->method === "GET"){
-            $this->get();
-        }
-
-
-
-
-        return $this->response;
+        return $this->curlRequest();
     }
 
 

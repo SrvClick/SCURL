@@ -1,8 +1,7 @@
 <?php
-
 namespace Srvclick\Scurl;
 
-class CurlGet extends CurlOptions
+class CurlRequest extends CurlOptions
 {
 
     protected string $url;
@@ -54,6 +53,7 @@ class CurlGet extends CurlOptions
         if (isset($this->ch_options['custom_method']) && !empty($this->ch_options['custom_method'])){
             $options[CURLOPT_CUSTOMREQUEST] = $this->ch_options['custom_method'];
         }
+
 
 
         curl_setopt_array($ch, $options);
