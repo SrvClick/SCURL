@@ -24,9 +24,9 @@ class CurlRequest extends CurlOptions
             $this->ch_options[$name] = $value;
         }
     }
-    public function setParameters(string $params) : void
+    public function setParameters($params) : void
     {
-        $this->parameters = $params;
+        $this->parameters = is_array($params) ? http_build_query($params) : $params;
     }
     public function setMethod(string $method) : void
     {

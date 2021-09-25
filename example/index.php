@@ -20,7 +20,8 @@ $request->setParameters([
     ],
     "remember" => true,
     "refer" => "refer",
-    "country" => "US"
+    "country" => "US",
+    "random" => rand(0,time())
 ]);
 
 $request->setConfigs([

@@ -1,38 +1,25 @@
 <?php
 namespace Srvclick\Scurl;
 
-class Request{
+class Request extends CurlRequest{
 
     protected string $url;
     protected string $method;
     protected array $options = [];
     protected array $configs = [];
     protected string $parameters = "";
-    public function setUrl($url) : void
-    {
-        $this->url = $url;
-    }
-    public function setMethod($method) : void
-    {
-        $this->method = $method;
-    }
-    public function setParameters($params) : void
-    {
-         $this->parameters = is_array($params) ? http_build_query($params) : $params;
-    }
 
 
     protected function curlRequest(): Response
     {
-        $request = new CurlRequest();
+        //$request = new CurlRequest();
+        $this->setConfigs($this->configs);
+        $this->setOptions($this->options);
+        $this->setParameters($this->parameters);
+        $this->setMethod($this->method);
 
-        $request->setConfigs($this->configs);
-        $request->setOptions($this->options);
-        $request->setParameters($this->parameters);
-        $request->setMethod($this->method);
-
-        $request->setUrl($this->url);
-        return $request->sendRequest();
+        $this->setUrl($this->url);
+        return $this->sendRequest();
     }
 
 }
