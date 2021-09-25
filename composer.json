@@ -6,7 +6,7 @@
         "php": ">=7.4",
         "ext-curl": "*",
         "ext-json": "*",
-        "campo/random-user-agent": "^1.3"
+        "campo/random-user-agent": "*"
     },
     "autoload": {
         "psr-4": {
