@@ -1,13 +1,19 @@
 <?php
 namespace Srvclick\Scurl;
 
-class Response
+class Response extends Verbose
 {
 
     protected string $body = "SCURL:Empty";
     protected int $status = 0;
 
     protected string $error = "";
+    protected object $request;
+
+    public function setRequest($request)
+    {
+        $this->request = (object) $request;
+    }
 
     public function setError(string $error) : void
     {
@@ -22,7 +28,6 @@ class Response
     {
         $this->status = $status;
     }
-
 
     public function getBody(): string
     {

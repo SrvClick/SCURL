@@ -9,7 +9,7 @@ require_once __DIR__."/../vendor/autoload.php";
 use Srvclick\Scurl\Scurl_Request as SCURL;
 
 $request = new SCURL;
-$request->setUrl('https://webhook.site/33aaf937-d806-46d1-ab78-6bc53023d94c?a=1');
+$request->setUrl('https://checkip.amazonaws.com');
 $request->setMethod("POST");
 
 $request->setParameters([
@@ -41,9 +41,15 @@ $request->setOptions([
 
 $response = $request->Send();
 
+$verbose = $response->verbose();
+
+
+print_r($verbose);
+
 //print_r($response);
 
-
+/*
 echo "Body: ".trim($response->getBody())."\n";
 
 echo "HTTP CODE: ".$response->getStatus();
+*/

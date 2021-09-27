@@ -77,10 +77,14 @@ class CurlRequest extends CurlOptions
         curl_close($ch);
         $response = new Response;
 
+
         if ($cr_response === false){
             $response->setError(curl_error($ch));
         }
 
+        //$this->verbose()
+
+        $response->setRequest($this->getRequest());
 
 
         $response->setBody($cr_response);
