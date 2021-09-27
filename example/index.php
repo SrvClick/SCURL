@@ -34,10 +34,6 @@ $request->setOptions([
     CURLOPT_FOLLOWLOCATION => false,
 ]);
 
-/*
- * Follow = false
- */
-
 
 $response = $request->Send();
 
@@ -45,11 +41,3 @@ $verbose = $response->verbose();
 
 
 print_r($verbose);
-
-//print_r($response);
-
-/*
-echo "Body: ".trim($response->getBody())."\n";
-
-echo "HTTP CODE: ".$response->getStatus();
-*/
