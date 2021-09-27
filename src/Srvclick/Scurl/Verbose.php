@@ -5,9 +5,6 @@ class Verbose
 {
     public function verbose() : object
     {
-
-
-
         return (Object) array(
                 'Request' => (Object) [
                 'URL' => $this->request->url,
@@ -24,5 +21,4 @@ class Verbose
             ]
         );
     }
-
 }
