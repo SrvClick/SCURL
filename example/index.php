@@ -30,10 +30,11 @@ $request->setConfigs([
     'follow' => false
 ]);
 
-
 $response = $request->Send();
+
 $verbose = $response->verbose();
-//print_r($verbose);
+print_r($verbose);
+
 
 if ($response->getStatus() == 200){
     echo $response->getBody();
