@@ -17,7 +17,7 @@ class Verbose
                 'BODY' => $this->body,
                 'HTTP_CODE' => $this->status,
                 'ERROR' => $this->error,
-
+                'REDIRECT_URL' => empty($this->redirecturl) ? '' : $this->redirecturl,
             ]
         );
     }

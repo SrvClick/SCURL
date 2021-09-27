@@ -10,6 +10,15 @@ class Response extends Verbose
     protected string $error = "";
     protected object $request;
 
+    protected string $redirecturl;
+
+    public function setRedirectUrl(string $url) : void{
+        $this->redirecturl = $url;
+    }
+    public function getRedirectUrl() : string{
+        return empty($this->redirecturl) ? '' : $this->redirecturl;
+    }
+
     public function setRequest($request)
     {
         $this->request = (object) $request;

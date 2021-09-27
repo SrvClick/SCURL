@@ -13,7 +13,7 @@ class CurlOptions
             'ssl_verifypeer' => true,
             'follow' => false,
             'encondig' => "",
-            'useragent' => 'SCURL by SrvClick',
+            'user-agent' => 'SCURL by SrvClick',
             'header' => []
         ];
 }

@@ -1,12 +1,13 @@
 {
     "name": "srvclick/scurl",
-    "description": "Easy Curl Library",
+    "description": "Easy PHP Curl Library",
     "type": "library",
     "require": {
         "php": ">=7.4",
         "ext-curl": "*",
         "ext-json": "*",
-        "campo/random-user-agent": "*"
+        "campo/random-user-agent": "*",
+        "ramsey/uuid" : "*"
     },
     "autoload": {
         "psr-4": {

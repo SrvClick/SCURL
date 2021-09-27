@@ -1,6 +1,7 @@
 <?php
 namespace Srvclick\Scurl;
 
+
 class CurlRequest extends CurlOptions
 {
     protected string $url;
@@ -22,6 +23,7 @@ class CurlRequest extends CurlOptions
         foreach ($configs as $name => $value){
             $this->ch_options[$name] = $value;
         }
+        $this->configs = $configs;
     }
     public function setParameters($params) : void
     {
@@ -43,8 +45,8 @@ class CurlRequest extends CurlOptions
             CURLOPT_ENCODING => $this->ch_options['encondig'],
             CURLOPT_HTTP_VERSION => $this->ch_options['http_version'],
             CURLOPT_HTTPHEADER => $this->ch_options['header'],
-            CURLOPT_USERAGENT => $this->ch_options['useragent'],
-            CURLOPT_FOLLOWLOCATION => $this->ch_options['timeout'],
+            CURLOPT_USERAGENT => $this->ch_options['user-agent'],
+            CURLOPT_FOLLOWLOCATION => $this->ch_options['follow'],
             CURLOPT_MAXREDIRS => $this->ch_options['max_redirs'],
         ];
         foreach ($this->options as $name => $value){
@@ -88,6 +90,10 @@ class CurlRequest extends CurlOptions
         $response->setRequest($this->getRequest());
         $response->setBody($cr_response);
         $response->setStatus($cr_status);
+        if ($cr_status >= 300 && $cr_status <= 399) {
+            $response->setRedirectUrl(curl_getinfo($ch, CURLINFO_REDIRECT_URL));
+        }
+
         return $response;
     }
 

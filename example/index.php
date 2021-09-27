@@ -10,7 +10,7 @@ use Srvclick\Scurl\Scurl_Request as SCURL;
 
 $request = new SCURL;
 $request->setUrl('https://checkip.amazonaws.com');
-$request->setMethod("POST");
+$request->setMethod("GET");
 
 $request->setParameters([
     'auth' => [
@@ -21,23 +21,25 @@ $request->setParameters([
     "remember" => true,
     "refer" => "refer",
     "country" => "US",
-    "random" => rand(0,time())
+    "random" => rand(0,time()),
+    "uuid" => $request->uuid(),
 ]);
 
 $request->setConfigs([
-    'follow' => true
-]);
-
-//setOptions remplazara cualquier valor de setConfigs.
-
-$request->setOptions([
-    CURLOPT_FOLLOWLOCATION => false,
+    'user-agent' => $request->ua(),
+    'follow' => false
 ]);
 
 
 $response = $request->Send();
-
 $verbose = $response->verbose();
+//print_r($verbose);
 
+if ($response->getStatus() == 200){
+    echo $response->getBody();
+}elseif($response->getStatus() == 301){
+    echo "REDIRECT ".$response->getRedirectUrl();
+}else{
+    echo "Failed ".$response->getStatus();
+}
 
-print_r($verbose);

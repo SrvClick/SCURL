@@ -1,6 +1,7 @@
 <?php
 namespace Srvclick\Scurl;
-
+use Ramsey\Uuid\Uuid;
+use Campo\UserAgent;
 class Request extends CurlRequest{
 
     protected string $url;
@@ -9,13 +10,15 @@ class Request extends CurlRequest{
     protected array $configs = [];
     protected string $parameters = "";
 
-    protected function curlRequest(): Response
+    public function Send(): Response
     {
+
         $this->setConfigs($this->configs);
         $this->setOptions($this->options);
         $this->setParameters($this->parameters);
         $this->setMethod($this->method);
         $this->setUrl($this->url);
+
         return $this->sendRequest();
     }
     protected function getRequest() : array
@@ -27,6 +30,15 @@ class Request extends CurlRequest{
           'configs' => $this->configs,
           'parameters' => $this->parameters,
         ];
+    }
+
+    public function ua(): string
+    {
+        return UserAgent::random();
+    }
+    public function uuid(): string
+    {
+        return Uuid::uuid4()->toString();
     }
 
 }
