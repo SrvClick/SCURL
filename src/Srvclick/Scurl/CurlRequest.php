@@ -3,7 +3,6 @@ namespace Srvclick\Scurl;
 
 class CurlRequest extends CurlOptions
 {
-
     protected string $url;
     protected array $options = [];
     protected array $configs = [];
@@ -75,18 +74,18 @@ class CurlRequest extends CurlOptions
         $cr_response = curl_exec($ch);
         $cr_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        $response = new Response;
 
+
+
+
+
+        $response = new Response;
 
         if ($cr_response === false){
             $response->setError(curl_error($ch));
         }
 
-        //$this->verbose()
-
         $response->setRequest($this->getRequest());
-
-
         $response->setBody($cr_response);
         $response->setStatus($cr_status);
         return $response;

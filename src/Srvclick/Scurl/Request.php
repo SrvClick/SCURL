@@ -9,10 +9,8 @@ class Request extends CurlRequest{
     protected array $configs = [];
     protected string $parameters = "";
 
-
     protected function curlRequest(): Response
     {
-        //$request = new CurlRequest();
         $this->setConfigs($this->configs);
         $this->setOptions($this->options);
         $this->setParameters($this->parameters);

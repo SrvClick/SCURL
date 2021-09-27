@@ -3,7 +3,7 @@ namespace Srvclick\Scurl;
 
 class Verbose
 {
-    public function verbose() : object
+    public function verbose() : Object
     {
         return (Object) array(
                 'Request' => (Object) [
