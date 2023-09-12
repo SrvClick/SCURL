@@ -124,6 +124,11 @@ class CurlRequest extends CurlOptions
         $response = new Response;
         if ($this->download){
             if ($cr_status != 200) {  $response->setError("No se encontro el fichero."); return $response; }
+
+
+            if (!is_dir($this->downloadPath)){ mkdir($this->downloadPath,"777"); }
+
+
             if (file_put_contents($this->downloadPath."/".$this->downloadName, $cr_response, FILE_APPEND) === false) {
                 $response->setError( "No se logro guardar el archivo");
             }
@@ -153,8 +158,7 @@ class CurlRequest extends CurlOptions
             $response->setRedirectUrl(curl_getinfo($ch, CURLINFO_REDIRECT_URL));
         }
 
-
-
+        $response->setETA(microtime(true) - $this->etatime);
 
         return $response;
     }

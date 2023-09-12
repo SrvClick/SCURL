@@ -11,6 +11,7 @@ class Response extends Verbose
     protected string $redirecturl;
     protected array $responseCookies;
     protected object $cookies;
+    protected float $etatime;
 
     public function setResponseCookies($responseCookies) : void
     {
@@ -59,6 +60,13 @@ class Response extends Verbose
     public function getStatus(): int
     {
         return $this->status;
+    }
+    public function setETA($eta) : float
+    {
+        return $this->etatime = $eta;
+    }
+    public function getETA() : float{
+        return round($this->etatime,3);
     }
 
 }
