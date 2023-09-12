@@ -11,7 +11,20 @@ class CurlRequest extends CurlOptions
     protected string $parameters = "";
     protected string $method = "";
     protected bool $interceptCookies = false;
+    protected bool $download = false;
 
+    protected string $downloadPath = "";
+    protected string $downloadName = "";
+
+    public function downloadFile($path=null,$name=null): void
+    {
+        if (empty($path) || empty($name)){
+            die("Requiere path y name");
+        }
+        $this->download = true;
+        $this->downloadPath = $path;
+        $this->downloadName = $name;
+    }
     public function setInterceptCookie($bool) : void{
         $this->interceptCookies = $bool;
     }
@@ -104,19 +117,20 @@ class CurlRequest extends CurlOptions
         if (isset($this->ch_options['custom_method']) && !empty($this->ch_options['custom_method'])){
             $options[CURLOPT_CUSTOMREQUEST] = $this->ch_options['custom_method'];
         }
-
-
         curl_setopt_array($ch, $options);
         $cr_response = curl_exec($ch);
         $cr_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
         $response = new Response;
-
+        if ($this->download){
+            if ($cr_status != 200) {  $response->setError("No se encontro el fichero."); return $response; }
+            if (file_put_contents($this->downloadPath."/".$this->downloadName, $cr_response, FILE_APPEND) === false) {
+                $response->setError( "No se logro guardar el archivo");
+            }
+        }
         if ($cr_response === false){
             $response->setError(curl_error($ch));
         }
-
         if ($this->useCookie) {
             $response->setCookie([
                 "useCookie" => $this->useCookie,
@@ -138,6 +152,9 @@ class CurlRequest extends CurlOptions
         if ($cr_status >= 300 && $cr_status <= 399) {
             $response->setRedirectUrl(curl_getinfo($ch, CURLINFO_REDIRECT_URL));
         }
+
+
+
 
         return $response;
     }
