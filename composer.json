@@ -1,6 +1,7 @@
 {
     "name": "srvclick/scurl",
     "description": "Easy PHP Curl Library",
+    "license": "MIT",
     "type": "library",
     "require": {
         "php": ">=8.1",
@@ -9,6 +10,7 @@
         "campo/random-user-agent": "*",
         "ramsey/uuid" : "*"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Srvclick\\Scurl\\": "src/Srvclick/Scurl/"
