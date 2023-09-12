@@ -3,6 +3,7 @@ namespace Srvclick\Scurl;
 
 class CurlOptions extends CurlFilesManager
 {
+
     protected array $ch_options =
         [
             'use_proxy' => true,

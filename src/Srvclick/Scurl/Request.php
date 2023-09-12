@@ -12,6 +12,7 @@ class Request extends CurlRequest{
     protected array $headers = [];
     protected string $parameters = "";
 
+
     public function Send(): Response
     {
         return $this->sendRequest();

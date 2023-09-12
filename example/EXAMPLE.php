@@ -36,11 +36,12 @@ $curl->setParameters([
     "uuid" => $curl->uuid(),
 ]);
 
+
 $response = $curl->Send();
 //$response->verbose();
 if ($response->getStatus() == 200){
-    echo $response->getBody();
-    $curl->deleteCookie();
+    print_r($response->getBodyArray());
+    //$curl->deleteCookie();
 }elseif($response->getStatus() == 301){
     echo "REDIRECT ".$response->getRedirectUrl();
 }else{

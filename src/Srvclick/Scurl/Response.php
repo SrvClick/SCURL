@@ -14,6 +14,7 @@ class Response extends Verbose
     protected float $etatime;
     protected array $proxy;
 
+
     public function setProxy($proxy) : void
     {
         $this->proxy = $proxy;
@@ -57,7 +58,9 @@ class Response extends Verbose
     {
         $this->status = $status;
     }
-
+    public function getBodyArray() : array{
+        return json_decode($this->body,true);
+    }
     public function getBody(): string
     {
         return $this->body;
@@ -75,3 +78,4 @@ class Response extends Verbose
     }
 
 }
+

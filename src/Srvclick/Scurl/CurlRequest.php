@@ -166,6 +166,8 @@ class CurlRequest extends CurlOptions
         $response->setProxy($this->proxy);
         $response->setRequest($this->getRequest());
         $response->setBody($cr_response);
+
+
         $response->setStatus($cr_status);
         if ($cr_status >= 300 && $cr_status <= 399) {
             $response->setRedirectUrl(curl_getinfo($ch, CURLINFO_REDIRECT_URL));

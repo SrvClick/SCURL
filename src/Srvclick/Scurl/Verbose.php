@@ -3,6 +3,7 @@ namespace Srvclick\Scurl;
 
 class Verbose
 {
+
     public function verbose() : Void
     {
         echo "\n\n**** SRVCLICK VERBOSE RESPONSE ****\n\n";
