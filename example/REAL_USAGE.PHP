@@ -10,8 +10,8 @@ class REAL_USAGE
     protected SCURL $curl;
     public function __construct(){
         $this->curl = new SCURL();
-        $this->curl->setCookieName("login");
         $this->curl->useCookie(true);
+        $this->curl->setCookieName("login");
     }
 
     public function login(){
