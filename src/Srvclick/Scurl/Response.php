@@ -12,7 +12,12 @@ class Response extends Verbose
     protected array $responseCookies;
     protected object $cookies;
     protected float $etatime;
+    protected array $proxy;
 
+    public function setProxy($proxy) : void
+    {
+        $this->proxy = $proxy;
+    }
     public function setResponseCookies($responseCookies) : void
     {
         $this->responseCookies = $responseCookies;

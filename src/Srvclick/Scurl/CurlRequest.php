@@ -7,6 +7,7 @@ class CurlRequest extends CurlOptions
     protected string $url;
     protected array $options = [];
     protected array $configs = [];
+    protected array $proxy = [];
     protected array $headers = [];
     protected string $parameters = "";
     protected string $method = "";
@@ -43,6 +44,17 @@ class CurlRequest extends CurlOptions
         }
         $this->configs = $configs;
     }
+
+
+    public function setProxy(array $proxy) : void
+    {
+        foreach ($proxy as $name => $value){
+            $this->ch_options[$name] = $value;
+        }
+        $this->proxy = $proxy;
+    }
+
+
     public function setHeaders($headers) : void
     {
         $this->headers = $headers;
@@ -79,8 +91,8 @@ class CurlRequest extends CurlOptions
         foreach ($this->options as $name => $value){
             $options[$name] = $value;
         }
-        if (isset($this->ch_options['proxy']) && isset($this->ch_options['proxy_endpoint']) && isset($this->ch_options['proxy_port']) && $this->ch_options['use_proxy']){
-            $options[CURLOPT_PROXY] = $this->ch_options['proxy_endpoint'];
+        if (isset($this->ch_options['proxy']) && isset($this->ch_options['proxy_port']) && $this->ch_options['use_proxy']){
+            $options[CURLOPT_PROXY] = $this->ch_options['proxy'];
             $options[CURLOPT_PROXYPORT] = $this->ch_options['proxy_port'];
                 if (isset($this->ch_options['proxy_user']) && isset($this->ch_options['proxy_pass'])){
                     $options[CURLOPT_PROXYUSERPWD] = $this->ch_options['proxy_user'].":".$this->ch_options['proxy_pass'];
@@ -151,6 +163,7 @@ class CurlRequest extends CurlOptions
             }
         }
 
+        $response->setProxy($this->proxy);
         $response->setRequest($this->getRequest());
         $response->setBody($cr_response);
         $response->setStatus($cr_status);

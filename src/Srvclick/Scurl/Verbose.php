@@ -13,6 +13,7 @@ class Verbose
                 'PARAMETERS' => $this->request->parameters,
                 'CONFIGS' => (Object) $this->request->configs,
                 'OPTIONS' => (Object) $this->request->options,
+                "PROXY" => $this->proxy,
             ],
             'RESPONSE' => (Object) [
                 'BODY' => $this->body,
@@ -20,7 +21,8 @@ class Verbose
                 'ERROR' => $this->error,
                 'REDIRECT_URL' => empty($this->redirecturl) ? '' : $this->redirecturl,
                 "ETATIME" => $this->etatime,
-                "COOKIES" => $this->cookies ?? "nothing"
+                "COOKIES" => $this->cookies ?? "nothing",
+
             ]
         )
         );
