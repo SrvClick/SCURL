@@ -3,7 +3,6 @@
  * Example SCURL REAL USAGE
  * @author SrvClick
  */
-
 require_once __DIR__."/../vendor/autoload.php";
 use Srvclick\Scurl\Scurl_Request as SCURL;
 class REAL_USAGE
