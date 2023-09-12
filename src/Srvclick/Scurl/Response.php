@@ -9,11 +9,20 @@ class Response extends Verbose
     protected string $error = "";
     protected object $request;
     protected string $redirecturl;
-
+    protected array $responseCookies;
     protected object $cookies;
 
+    public function setResponseCookies($responseCookies) : void
+    {
+        $this->responseCookies = $responseCookies;
+    }
     public function setRedirectUrl(string $url) : void{
         $this->redirecturl = $url;
+    }
+
+    public function getResponseCoookies(): array
+    {
+        return $this->responseCookies;
     }
     public function getRedirectUrl() : string{
         if (empty($this->redirecturl)) return '';

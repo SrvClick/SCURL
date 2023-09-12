@@ -125,6 +125,13 @@ class CurlRequest extends CurlOptions
             ]);
         }
 
+        if ($cr_response) {
+            if ($this->interceptCookies) {
+                preg_match_all('/Set-Cookie:(?<cookie>\s{0,}.*)$/im', $cr_response, $cookies);
+                $response->setResponseCookies($cookies[0]);
+            }
+        }
+
         $response->setRequest($this->getRequest());
         $response->setBody($cr_response);
         $response->setStatus($cr_status);
