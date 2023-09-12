@@ -13,7 +13,7 @@ $curl = new SCURL;
 $curl->setUrl('https://odinchk.com/request.php');
 $curl->setMethod("POST");
 $curl->setConfigs([
-    'user-agent' => $curl->ua(),
+    'user-agent' => "Mozilla/5.0 (compatible; SrvClick/SCURL/1.0;)",//RANDOM USER_AGENT $curl->ua(),
     'follow' => false,
     'timeout' => 60
 ]);
@@ -39,7 +39,7 @@ $curl->setParameters([
 $response = $curl->Send();
 //$response->verbose();
 if ($response->getStatus() == 200){
-    //echo $response->getBody();
+    echo $response->getBody();
     $curl->deleteCookie();
 }elseif($response->getStatus() == 301){
     echo "REDIRECT ".$response->getRedirectUrl();
