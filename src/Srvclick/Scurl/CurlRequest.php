@@ -3,13 +3,18 @@ namespace Srvclick\Scurl;
 
 class CurlRequest extends CurlOptions
 {
+
     protected string $url;
     protected array $options = [];
     protected array $configs = [];
     protected array $headers = [];
     protected string $parameters = "";
     protected string $method = "";
+    protected bool $interceptCookies = false;
 
+    public function setInterceptCookie($bool) : void{
+        $this->interceptCookies = $bool;
+    }
     public function setUrl($url) : void
     {
         $this->url = $url;
@@ -38,8 +43,14 @@ class CurlRequest extends CurlOptions
         $this->method = $method;
     }
 
+
+
+
     public function sendRequest(): Response
     {
+
+
+
         $ch = curl_init();
         $options = [
             CURLOPT_URL => $this->url,
@@ -76,10 +87,17 @@ class CurlRequest extends CurlOptions
 
         }
 
+
+        $options[CURLOPT_HEADER] = (int)$this->interceptCookies;
+
+
+
         if (isset($this->ch_options['http_auth']) && isset($this->ch_options['http_user']) && isset($this->ch_options['http_pass'])){
             $options[CURLOPT_USERPWD] = $this->ch_options['http_user'].":".$this->ch_options['http_pass'];
         }
-        if ($this->method == "POST"){
+
+
+        if (isset($this->method) && $this->method == "POST"){
             $options[CURLOPT_POST] = true;
             $options[CURLOPT_POSTFIELDS] = $this->parameters;
         }

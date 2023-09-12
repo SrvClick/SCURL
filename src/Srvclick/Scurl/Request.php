@@ -20,16 +20,16 @@ class Request extends CurlRequest{
     {
         return [
           'url' => $this->url,
-          'method' => $this->method,
+          'method' => $this->method ?? "GET",
           'options' => $this->options,
           'configs' => $this->configs,
           'parameters' => $this->parameters,
         ];
     }
 
-    public function ua(): string
+    public function ua($config = ['os_type' => ['Android', 'iOS','Windows'], 'device_type' => ['Mobile', 'Tablet','Desktop']]): string
     {
-        return UserAgent::random();
+        return UserAgent::random($config);
     }
     public function uuid(): string
     {

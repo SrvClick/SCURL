@@ -8,7 +8,7 @@ class CurlOptions extends CurlFilesManager
             'use_proxy' => true,
             'max_redirs' => 10,
             'timeout' => 30,
-            'http_version' => CURL_HTTP_VERSION_NONE,
+            'http_version' => CURL_HTTP_VERSION_1_1,
             'return_transfer' => true,
             'ssl_verifypeer' => true,
             'follow' => false,

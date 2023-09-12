@@ -1,18 +1,29 @@
 <?php
 /**
  * Example SCURL
- *
  * @author SrvClick
  */
 
 require_once __DIR__."/../vendor/autoload.php";
+
 use Srvclick\Scurl\Scurl_Request as SCURL;
 
-$request = new SCURL;
-$request->setUrl('https://odinchk.com/request.php');
-$request->setMethod("POST");
 
-$request->setParameters([
+$curl = new SCURL;
+$curl->setUrl('https://odinchk.com/request.php');
+$curl->setMethod("POST");
+$curl->setConfigs([
+    'user-agent' => $curl->ua(),
+    'follow' => false,
+    'timeout' => 60
+]);
+$curl->setHeaders(
+    array( 'X-SRVCLICK: SRVCLICK-HEADER', )
+);
+$curl->setCookieName("Hey");
+$curl->useCookie();
+
+$curl->setParameters([
     'auth' => [
         'user' => "username",
         'pass' => "password",
@@ -22,31 +33,14 @@ $request->setParameters([
     "refer" => "refer",
     "country" => "US",
     "random" => rand(0,time()),
-    "uuid" => $request->uuid(),
+    "uuid" => $curl->uuid(),
 ]);
 
-$request->setCookieName("Hey");
-$request->useCookie();
-
-
-
-$request->setHeaders(
-    array(
-        'X-SRVCLICK: SRVCLICK-HEADER',
-    )
-);
-$request->setConfigs([
-    'user-agent' => $request->ua(),
-    'follow' => false
-]);
-
-$response = $request->Send();
-
+$response = $curl->Send();
 //$response->verbose();
-//print_r($verbose);
-
 if ($response->getStatus() == 200){
-    $request->deleteCookie();
+    //echo $response->getBody();
+    $curl->deleteCookie();
 }elseif($response->getStatus() == 301){
     echo "REDIRECT ".$response->getRedirectUrl();
 }else{
