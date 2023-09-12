@@ -1,6 +1,6 @@
 <?php
 /**
- * Example SCURL DOWNLOAD FILE
+ * Example SCURL PROXY USAGE
  * @author SrvClick
  */
 
