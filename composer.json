@@ -3,7 +3,7 @@
     "description": "Easy PHP Curl Library",
     "type": "library",
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.1",
         "ext-curl": "*",
         "ext-json": "*",
         "campo/random-user-agent": "*",
