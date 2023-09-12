@@ -3,9 +3,9 @@ namespace Srvclick\Scurl;
 
 class Verbose
 {
-    public function verbose() : Object
+    public function verbose() : Void
     {
-        return (Object) array(
+        print_r(array(
                 'Request' => (Object) [
                 'URL' => $this->request->url,
                 'METHOD' => $this->request->method,
@@ -19,6 +19,7 @@ class Verbose
                 'ERROR' => $this->error,
                 'REDIRECT_URL' => empty($this->redirecturl) ? '' : $this->redirecturl,
             ]
+        )
         );
     }
 }
