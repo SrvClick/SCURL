@@ -18,6 +18,7 @@ class Verbose
                 'HTTP_CODE' => $this->status,
                 'ERROR' => $this->error,
                 'REDIRECT_URL' => empty($this->redirecturl) ? '' : $this->redirecturl,
+                "COOKIES" => $this->cookies ?? "nothing"
             ]
         )
         );

@@ -1,12 +1,12 @@
 <?php
 namespace Srvclick\Scurl;
 
-
 class CurlRequest extends CurlOptions
 {
     protected string $url;
     protected array $options = [];
     protected array $configs = [];
+    protected array $headers = [];
     protected string $parameters = "";
     protected string $method = "";
 
@@ -24,6 +24,10 @@ class CurlRequest extends CurlOptions
             $this->ch_options[$name] = $value;
         }
         $this->configs = $configs;
+    }
+    public function setHeaders($headers) : void
+    {
+        $this->headers = $headers;
     }
     public function setParameters($params) : void
     {
@@ -44,7 +48,6 @@ class CurlRequest extends CurlOptions
             CURLOPT_SSL_VERIFYPEER => $this->ch_options['ssl_verifypeer'],
             CURLOPT_ENCODING => $this->ch_options['encondig'],
             CURLOPT_HTTP_VERSION => $this->ch_options['http_version'],
-            CURLOPT_HTTPHEADER => $this->ch_options['header'],
             CURLOPT_USERAGENT => $this->ch_options['user-agent'],
             CURLOPT_FOLLOWLOCATION => $this->ch_options['follow'],
             CURLOPT_MAXREDIRS => $this->ch_options['max_redirs'],
@@ -59,6 +62,20 @@ class CurlRequest extends CurlOptions
                     $options[CURLOPT_PROXYUSERPWD] = $this->ch_options['proxy_user'].":".$this->ch_options['proxy_pass'];
                 }
         }
+
+        if (!empty($this->headers)){
+            $options[CURLOPT_HTTPHEADER] = $this->headers;
+        }
+
+        if ($this->useCookie && !empty($this->cookiename)){
+            if (!is_dir(__DIR__."/cookies")){
+                mkdir(__DIR__."/cookies","777");
+            }
+            $options[CURLOPT_COOKIEJAR] = __DIR__."/cookies/".$this->cookiename;
+            $options[CURLOPT_COOKIEFILE] = __DIR__."/cookies/".$this->cookiename;
+
+        }
+
         if (isset($this->ch_options['http_auth']) && isset($this->ch_options['http_user']) && isset($this->ch_options['http_pass'])){
             $options[CURLOPT_USERPWD] = $this->ch_options['http_user'].":".$this->ch_options['http_pass'];
         }
@@ -71,20 +88,23 @@ class CurlRequest extends CurlOptions
         }
 
 
-
         curl_setopt_array($ch, $options);
         $cr_response = curl_exec($ch);
         $cr_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-
-
-
-
         $response = new Response;
 
         if ($cr_response === false){
             $response->setError(curl_error($ch));
+        }
+
+        if ($this->useCookie) {
+            $response->setCookie([
+                "useCookie" => $this->useCookie,
+                "cookieName" => $this->cookiename,
+                "cookiePath" => __DIR__ . "/cookies/" . $this->cookiename
+            ]);
         }
 
         $response->setRequest($this->getRequest());

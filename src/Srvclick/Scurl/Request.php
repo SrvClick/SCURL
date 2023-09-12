@@ -3,22 +3,17 @@ namespace Srvclick\Scurl;
 use Ramsey\Uuid\Uuid;
 use Campo\UserAgent;
 class Request extends CurlRequest{
-
+    protected bool $useCookie = false;
     protected string $url;
+    protected string $cookiename;
     protected string $method;
     protected array $options = [];
     protected array $configs = [];
+    protected array $headers = [];
     protected string $parameters = "";
 
     public function Send(): Response
     {
-
-        $this->setConfigs($this->configs);
-        $this->setOptions($this->options);
-        $this->setParameters($this->parameters);
-        $this->setMethod($this->method);
-        $this->setUrl($this->url);
-
         return $this->sendRequest();
     }
     protected function getRequest() : array
@@ -39,6 +34,14 @@ class Request extends CurlRequest{
     public function uuid(): string
     {
         return Uuid::uuid4()->toString();
+    }
+    public function setCookieName($cookiename) : void
+    {
+        $this->cookiename = $cookiename;
+    }
+
+    public function useCookie($bool = true) : void{
+        $this->useCookie = $bool;
     }
 
 }

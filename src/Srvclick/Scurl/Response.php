@@ -6,20 +6,25 @@ class Response extends Verbose
 
     protected string $body = "SCURL:Empty";
     protected int $status = 0;
-
     protected string $error = "";
     protected object $request;
-
     protected string $redirecturl;
+
+    protected object $cookies;
 
     public function setRedirectUrl(string $url) : void{
         $this->redirecturl = $url;
     }
     public function getRedirectUrl() : string{
-        return empty($this->redirecturl) ? '' : $this->redirecturl;
+        if (empty($this->redirecturl)) return '';
+        return $this->redirecturl;
     }
 
-    public function setRequest($request)
+    public function setCookie($cookies) : void{
+        $this->cookies = (Object) $cookies;
+    }
+
+    public function setRequest($request) : void
     {
         $this->request = (object) $request;
     }

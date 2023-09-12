@@ -25,6 +25,16 @@ $request->setParameters([
     "uuid" => $request->uuid(),
 ]);
 
+$request->setCookieName("Hey");
+$request->useCookie();
+
+
+
+$request->setHeaders(
+    array(
+        'X-SRVCLICK: SRVCLICK-HEADER',
+    )
+);
 $request->setConfigs([
     'user-agent' => $request->ua(),
     'follow' => false
@@ -32,15 +42,13 @@ $request->setConfigs([
 
 $response = $request->Send();
 
-$response->verbose();
+//$response->verbose();
 //print_r($verbose);
 
-
 if ($response->getStatus() == 200){
-    echo $response->getBody();
+    $request->deleteCookie();
 }elseif($response->getStatus() == 301){
     echo "REDIRECT ".$response->getRedirectUrl();
 }else{
     echo "Failed ".$response->getStatus();
 }
-

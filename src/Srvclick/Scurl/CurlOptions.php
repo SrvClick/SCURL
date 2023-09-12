@@ -1,7 +1,7 @@
 <?php
 namespace Srvclick\Scurl;
 
-class CurlOptions
+class CurlOptions extends CurlFilesManager
 {
     protected array $ch_options =
         [
