@@ -59,6 +59,9 @@ class CurlRequest extends CurlOptions
     {
         $this->headers = $headers;
     }
+    public function getParameters() : string{
+        return $this->parameters;
+    }
     public function setParameters($params) : void
     {
         $this->parameters = is_array($params) ? http_build_query($params) : $params;
