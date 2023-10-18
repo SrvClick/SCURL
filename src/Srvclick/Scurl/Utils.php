@@ -21,6 +21,7 @@ class Utils{
         $lng_rads = atan2( $x3, $y3 );
         $lat_rads = asin( $z3 );
         return array_map( 'rad2deg', array( $lat_rads, $lng_rads ) );
+
     }
 
 }
