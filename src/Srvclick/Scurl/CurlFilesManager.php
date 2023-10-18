@@ -1,7 +1,7 @@
 <?php
 namespace Srvclick\Scurl;
 
-class CurlFilesManager
+class CurlFilesManager extends Utils
 {
 
     public function deleteCookie() : bool{
