@@ -1,7 +1,7 @@
 <?php
 namespace Srvclick\Scurl;
 class Utils{
-    public function generateRandomPoint($centre, $radius) {
+    public function randomCoords($centre, $radius) {
         $radius_earth = 3959;
         $distance = lcg_value()*$radius;
         $centre_rads = array_map( 'deg2rad', $centre );
