@@ -14,7 +14,12 @@ class Response extends Verbose
     protected float $etatime;
     protected array $proxy;
 
+    protected string $headers;
 
+
+    public function setHeader($headers) : void{
+        $this->headers = $headers;
+    }
     public function setProxy($proxy) : void
     {
         $this->proxy = $proxy;

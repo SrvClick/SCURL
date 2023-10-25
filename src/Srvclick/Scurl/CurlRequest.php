@@ -163,6 +163,12 @@ class CurlRequest extends CurlOptions
             if ($this->interceptCookies) {
                 preg_match_all('/Set-Cookie:(?<cookie>\s{0,}.*)$/im', $cr_response, $cookies);
                 $response->setResponseCookies($cookies[0]);
+
+                $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+                $response->setHeader(substr($cr_response, 0, $header_size));
+                $cr_response = substr($cr_response, $header_size);
+
+
             }
         }
 

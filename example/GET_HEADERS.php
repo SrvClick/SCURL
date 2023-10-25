@@ -11,6 +11,7 @@ $curl->setUrl('https://www.google.com');
 
 $curl->setInterceptCookie(true);
 $response = $curl->Send();
+print_r($response->getBody());
 print_r($response->getResponseCoookies());
 
 
