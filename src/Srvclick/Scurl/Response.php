@@ -65,7 +65,7 @@ class Response extends Verbose
     }
     public function getBodyArray() : array{
         $response =  json_decode($this->body,true);
-        if (!is_array($response)) return ["Error" => "No es un array"];
+        if (!is_array($response)) return ["Error" => "No es un array."];
         return $response;
     }
     public function getBody(): string
