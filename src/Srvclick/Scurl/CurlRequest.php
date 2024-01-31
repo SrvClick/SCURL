@@ -81,9 +81,6 @@ class CurlRequest extends CurlOptions
 
     public function sendRequest(): Response
     {
-
-
-
         $ch = curl_init();
         $options = [
             CURLOPT_URL => $this->url,
@@ -106,9 +103,10 @@ class CurlRequest extends CurlOptions
                     $options[CURLOPT_PROXYUSERPWD] = $this->ch_options['proxy_user'].":".$this->ch_options['proxy_pass'];
                 }
         }
-
         if (!empty($this->headers)){
             $options[CURLOPT_HTTPHEADER] = $this->headers;
+            $ua = explode(":",implode(preg_grep('/^[Uu]ser-[Aa]gent\s.*/', $this->headers)));
+            if (count($ua) > 1) { $options[CURLOPT_USERAGENT] = trim($ua[1]); }
         }
 
         if ($this->useCookie && !empty($this->cookiename)){
