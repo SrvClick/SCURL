@@ -14,6 +14,8 @@ class CurlRequest extends CurlOptions
     protected bool $interceptCookies = false;
     protected bool $download = false;
 
+    protected array $arrayParameters = [];
+    protected bool $isArrayParams = false;
     protected string $downloadPath = "";
     protected string $downloadName = "";
 
@@ -70,6 +72,12 @@ class CurlRequest extends CurlOptions
     public function setParameters($params) : void
     {
         $this->parameters = is_array($params) ? http_build_query($params) : $params;
+    }
+
+    public function setArrayParameters($params) : void
+    {
+        $this->setArrayParameters($params);
+        $this->isArrayParams = true;
     }
     public function setMethod(string $method) : void
     {
@@ -130,7 +138,7 @@ class CurlRequest extends CurlOptions
 
         if (isset($this->method) && $this->method == "POST"){
             $options[CURLOPT_POST] = true;
-            $options[CURLOPT_POSTFIELDS] = $this->parameters;
+            $options[CURLOPT_POSTFIELDS] = ($this->isArrayParams) ? $this->arrayParameters : $this->parameters;
         }
         if (isset($this->ch_options['custom_method']) && !empty($this->ch_options['custom_method'])){
             $options[CURLOPT_CUSTOMREQUEST] = $this->ch_options['custom_method'];
