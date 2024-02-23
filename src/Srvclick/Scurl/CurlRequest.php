@@ -76,7 +76,7 @@ class CurlRequest extends CurlOptions
 
     public function setArrayParameters($params) : void
     {
-        $this->setArrayParameters($params);
+        $this->arrayParameters = $params;
         $this->isArrayParams = true;
     }
     public function setMethod(string $method) : void
