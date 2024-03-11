@@ -17,6 +17,8 @@ class Request extends CurlRequest{
     {
         return $this->sendRequest();
     }
+
+
     protected function getRequest() : array
     {
         return [
