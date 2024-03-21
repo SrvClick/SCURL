@@ -32,9 +32,6 @@ class Response extends Verbose
         $this->redirecturl = $url;
     }
 
-    public function getHeaders() : string{
-        return $this->headers;
-    }
     public function getResponseCoookies(): array
     {
         return $this->responseCookies;
