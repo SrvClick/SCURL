@@ -62,6 +62,11 @@ class Response
     {
         $this->error[] = $error;
     }
+
+    public function getError($i = 0) : string
+    {
+        return $this->error[$i] ?? "No definido";
+    }
     public function setBody($body) : void
     {
         $this->body[] = $body;
