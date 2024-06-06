@@ -92,6 +92,7 @@ trait Curl
     public function setParameters($params) : void
     {
         $this->parameters[] = is_array($params) ? http_build_query($params) : $params;
+
     }
 
     public function setArrayParameters($params) : void
@@ -198,6 +199,7 @@ trait Curl
                     $response->setRedirectUrl(curl_getinfo($ch, CURLINFO_REDIRECT_URL));
                 }
                 $response->setProxy($this->proxy);
+                $response->range = $this->range;
                 $response->setRequest($this->getRequest());
                 $response->setBody($responses[$i]);
                 $response->setETA( round(microtime(true) - $start , 3) );

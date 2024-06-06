@@ -4,6 +4,7 @@ namespace Srvclick\Scurl;
 class Response
 {
     use Verbose;
+    public array $range = [];
     protected array $body = [];
     protected array $status = [];
     protected array $error = [];
@@ -15,16 +16,28 @@ class Response
     protected array $proxy;
 
     protected string $headers;
-
-
+    protected ?string $nip = null;
     protected array $multiClient = [];
 
+    public function checkNip($expectation): bool
+    {
+        for ($i = 0; $i < $this->getCount(); $i++){
+            if($expectation($this->getBody($i))){
+                $this->nip = $this->range[$i];
+                return true;
+            }
+        }
+        return false;
+    }
     public function getCount(): int
     {
         return count($this->request->url);
-
     }
 
+    public function getNip() : string
+    {
+        return $this->nip;
+    }
     public function setHeader($headers) : void{
         $this->headers = $headers;
     }

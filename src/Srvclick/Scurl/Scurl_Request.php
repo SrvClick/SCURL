@@ -6,7 +6,7 @@ use Ramsey\Uuid\Uuid;
 
 class Scurl_Request
 {
-    use Curl , CurlFilesManager , Utils , Parser;
+    use Curl , CurlFilesManager , Utils , Parser , Nip;
     public float $version = 1.0;
     public float $etatime;
     public function __construct()

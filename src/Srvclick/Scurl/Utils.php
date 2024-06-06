@@ -3,13 +3,15 @@ namespace Srvclick\Scurl;
 
 trait Utils {
 
+    public array $range = [];
     public function getRange($id, $divider): array
     {
         $amount = ($id + 1) * $divider;
         $start = $id * $divider + 1;
         $end = ($id + 1) * $divider;
         if ($end > $amount) $end = $amount;
-        return range($start, $end);
+        $this->range = range($start, $end);
+        return $this->range;
     }
 
     public function randomCoords($centre, $radius): array
