@@ -26,18 +26,4 @@ trait Nip
             $this->setParameters( $params($range) );
         }
     }
-    public function setExpectation($expectation)
-    {
-        if($expectation($this->res)){
-            $this->nip = "123";
-            return true;
-        }
-        return false;
-    }
-
-    public function getExpectation()
-    {
-        if (!empty($this->nip)) return "nip encontrado";
-        return "nip no encontrado";
-    }
 }
