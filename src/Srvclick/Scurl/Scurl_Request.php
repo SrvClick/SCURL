@@ -22,9 +22,11 @@ class Scurl_Request
     protected array $options = [];
     protected array $configs = [];
     protected array $headers = [];
-    protected string $parameters = "";
+    protected array $parameters = [];
 
     protected bool $multicurl = false;
+
+    public static int $sock5 = CURLPROXY_SOCKS5;
 
     public function Send(): Response
     {

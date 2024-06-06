@@ -2,6 +2,16 @@
 namespace Srvclick\Scurl;
 
 trait Utils {
+
+    public function getRange($id, $divider): array
+    {
+        $amount = ($id + 1) * $divider;
+        $start = $id * $divider + 1;
+        $end = ($id + 1) * $divider;
+        if ($end > $amount) $end = $amount;
+        return range($start, $end);
+    }
+
     public function randomCoords($centre, $radius): array
     {
         $radius_earth = 3959;

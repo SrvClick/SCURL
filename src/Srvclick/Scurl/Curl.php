@@ -4,6 +4,7 @@ use Exception;
 trait Curl
 {
 
+
     protected array $ch_options =
         [
             'use_proxy' => true,
@@ -80,8 +81,8 @@ trait Curl
     {
         $this->headers = $headers;
     }
-    public function getParameters() : string{
-        return $this->parameters;
+    public function getParameters($i = 0) : string{
+        return $this->parameters[$i];
     }
 
     public function getHeaders() : array{
@@ -90,7 +91,7 @@ trait Curl
 
     public function setParameters($params) : void
     {
-        $this->parameters = is_array($params) ? http_build_query($params) : $params;
+        $this->parameters[] = is_array($params) ? http_build_query($params) : $params;
     }
 
     public function setArrayParameters($params) : void
@@ -148,9 +149,9 @@ trait Curl
             $options[CURLOPT_USERPWD] = $this->ch_options['http_user'].":".$this->ch_options['http_pass'];
         }
 
-        if (isset($this->method) && $this->method == "POST"){
+        if (isset($this->method) && $this->method == "POST" && !$this->multicurl){
             $options[CURLOPT_POST] = true;
-            $options[CURLOPT_POSTFIELDS] = ($this->isArrayParams) ? $this->arrayParameters : $this->parameters;
+            $options[CURLOPT_POSTFIELDS] = ($this->isArrayParams) ? $this->arrayParameters : $this->parameters[0];
         }
         if (isset($this->ch_options['custom_method']) && !empty($this->ch_options['custom_method'])){
             $options[CURLOPT_CUSTOMREQUEST] = $this->ch_options['custom_method'];
@@ -166,6 +167,11 @@ trait Curl
             foreach ($this->urls as $i => $url){
                 $multiCurl[$i] = curl_init($url);
                 curl_setopt_array($multiCurl[$i], $options);
+
+                if (isset($this->method) && $this->method == "POST"){
+                    $options[CURLOPT_POST] = true;
+                    curl_setopt($multiCurl[$i], CURLOPT_POSTFIELDS , $this->parameters[$i]);
+                }
                 curl_multi_add_handle($mh, $multiCurl[$i]);
             }
             $running = 0;
