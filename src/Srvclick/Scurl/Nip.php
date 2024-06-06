@@ -6,8 +6,6 @@ trait Nip
 {
 
     protected bool $useNip = false;
-    protected string $res = '{"success":"yes"}';
-    protected string $nip = "";
     public function nipSetRange($init,$end): void
     {
         $this->range = $this->getRange($init,$end);
