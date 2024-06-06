@@ -19,6 +19,15 @@ class Response
 
     protected array $multiClient = [];
 
+    public function setExpectation($expectation)
+    {
+
+        for($i = 0; $i < $this->getCount(); $i++){
+            var_dump($i);
+        }
+        //print_r($expectation());
+
+    }
     public function getCount(): int
     {
         return count($this->request->url);
