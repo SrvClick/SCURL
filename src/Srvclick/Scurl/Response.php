@@ -22,6 +22,7 @@ class Response
     public function checkNip($expectation): bool
     {
         for ($i = 0; $i < $this->getCount(); $i++){
+            if (empty($this->getBody($i))) continue;
             if($expectation($this->getBody($i))){
                 $this->nip = $this->range[$i];
                 return true;
