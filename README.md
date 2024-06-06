@@ -144,3 +144,27 @@ for ($i = 0; $i < $response->getCount(); $i++) {
 }
 ```
 
+### NIP SUPPORT
+```php
+
+$curl->NipSetRange($core, $limit);
+$curl->NipMultiUrl('https://example.com/nip');
+$curl->NipSetParams(function($nip){
+        return ['otp' => str_pad($nip ,4,0,STR_PAD_LEFT)];
+        //return '{"nip":"'.str_pad($nip ,4,0,STR_PAD_LEFT).'"}'; //Example 2
+    }
+$response = $curl->Send();
+
+if($response->checkNip(function ($response) {
+    $decode = json_decode($response,true);
+    if ($decode['success'] == "yes") return true;
+    return false;
+})){
+    echo "NIP: ".$response->getNip()."\n";
+}else{
+    echo "Nip not found\n";
+}
+);
+
+
+```
