@@ -10,11 +10,9 @@ trait Parser
         $body = "";
         $method = "GET";
         $headers = [];
-
         foreach ($lines as $line) {
             $line = trim($line);
             $line = str_replace("'", "\"", $line);
-
             if (strpos($line, 'curl') !== false) {
                 preg_match('/"(.*?)"/s', $line, $matches);
                 if (isset($matches[1])) {
@@ -40,7 +38,6 @@ trait Parser
                 }
             }
         }
-
         $text = '$curl = new Scurl_Request();' . PHP_EOL;
         $text .= '$curl->setUrl("' . addslashes($url) . '");' . PHP_EOL;
         $text .= '$curl->setMethod("' . $method . '");' . PHP_EOL;
@@ -57,7 +54,6 @@ trait Parser
         $text .= '$response = $curl->Send();' . PHP_EOL;
         $text .= 'if ($response->getStatus() != 200) { print_r($response); return false; }' . PHP_EOL;
         $text .= 'echo $response->getBody();' . PHP_EOL;
-
         return $text;
     }
 

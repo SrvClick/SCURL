@@ -4,21 +4,11 @@ namespace Srvclick\Scurl;
 class Response
 {
     use Verbose;
-    public array $range = [];
-    protected array $body = [];
-    protected array $status = [];
-    protected array $error = [];
-    protected object $request;
-    protected array $redirecturl = [];
-    protected array $responseCookies;
-    protected object $cookies;
-    protected array $etatime;
+    public array $range, $body, $status, $error, $redirecturl, $multiClient, $etatime, $responseCookies = [];
+    protected object $request, $cookies;
     protected array $proxy;
-
     protected string $headers;
     protected ?string $nip = null;
-    protected array $multiClient = [];
-
     public function checkNip($expectation): bool
     {
         for ($i = 0; $i < $this->getCount(); $i++){
