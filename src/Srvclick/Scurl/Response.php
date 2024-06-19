@@ -7,7 +7,9 @@ class Response
     public array $range, $body, $status, $error, $redirecturl, $multiClient, $etatime, $responseCookies = [];
     protected object $request, $cookies;
     protected array $proxy;
-    protected string $headers;
+    protected $headers;
+
+    protected ?string $nipResponse = null;
     protected ?string $nip = null;
     public function checkNip($expectation): bool
     {
@@ -15,10 +17,15 @@ class Response
             if (empty($this->getBody($i))) continue;
             if($expectation($this->getBody($i))){
                 $this->nip = $this->range[$i];
+                $this->nipResponse = $this->getBody($i);
                 return true;
             }
         }
         return false;
+    }
+    public function getNipResponse() : ?string
+    {
+        return $this->nipResponse;
     }
     public function getCount(): int
     {
@@ -31,6 +38,10 @@ class Response
     }
     public function setHeader($headers) : void{
         $this->headers = $headers;
+    }
+    public function getHeaders() : string
+    {
+        return $this->headers;
     }
     public function setProxy($proxy) : void
     {
@@ -46,6 +57,8 @@ class Response
 
     public function getResponseCoookies($i=0): array
     {
+
+
         return $this->responseCookies[$i];
     }
     public function getRedirectUrl($i = 0) : string{
@@ -59,6 +72,7 @@ class Response
 
     public function setRequest($request) : void
     {
+        if (isset($this->request)) unset($this->request);
         $this->request = (object) $request;
     }
 

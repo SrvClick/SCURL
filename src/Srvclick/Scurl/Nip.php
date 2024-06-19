@@ -12,6 +12,7 @@ trait Nip
     }
     public function NipMultiUrl($url): void
     {
+
         $this->multicurl = true;
         $this->useNip = true;
         foreach ($this->range as $i => $range) {
