@@ -5,8 +5,6 @@ Easy PHP CURL Library
 
 
 
-
-
 ## Installation
 
 
@@ -93,7 +91,7 @@ $curl->setConfigs([
 
 #### USE COOKIES
 ```php
-$this->curl->useCookie(true);
+$curl->useCookie(true);
 $curl->setCookieName('Random Cookie Name');
 ```
 
