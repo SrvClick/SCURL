@@ -8,7 +8,7 @@ trait Verbose
     {
         echo "\n\n**** SRVCLICK VERBOSE RESPONSE ****\n\n";
 
-        print_r($this->request);
+        //print_r($this->request);
 
         print_r(array(
                 'Request' => (Object) [
@@ -18,6 +18,7 @@ trait Verbose
                 'CONFIGS' => (Object) $this->request->configs,
                 'OPTIONS' => (Object) $this->request->options,
                 "PROXY" => $this->proxy,
+                    'HEADERS' => $this->request->headers
             ],
             'RESPONSE' => (Object) [
                 'BODY' => $this->body,
@@ -26,6 +27,7 @@ trait Verbose
                 'REDIRECT_URL' => empty($this->redirecturl) ? '' : $this->redirecturl,
                 "ETATIME" => $this->etatime,
                 "COOKIES" => $this->cookies ?? "nothing",
+                'HEADERS' => $this->request->headers ?? "nothing",
 
             ]
         )

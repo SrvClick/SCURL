@@ -8,9 +8,26 @@ class Response
     protected object $request, $cookies;
     protected array $proxy;
     protected $headers;
+    protected ?string $remoteIP= null;
+
+
 
     protected ?string $nipResponse = null;
     protected ?string $nip = null;
+
+    public function setRemoteIP(string $remoteIP) : void
+    {
+        $this->remoteIP = $remoteIP;
+    }
+
+    public function getRemoteIP() : ?string
+    {
+        return $this->remoteIP;
+    }
+    public function getRequestHeaders()
+    {
+     return  $this->request->header ;
+    }
     public function checkNip($expectation): bool
     {
         for ($i = 0; $i < $this->getCount(); $i++){

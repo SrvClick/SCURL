@@ -10,6 +10,7 @@ trait Curl
         'http_version' => CURL_HTTP_VERSION_1_1,
         'return_transfer' => true,
         'ssl_verifypeer' => true,
+        'ssl_verify_host' => false,
         'follow' => false,
         'encondig' => "",
         'user-agent' => 'SCURL by SrvClick',
@@ -178,6 +179,23 @@ trait Curl
         $this->method = $method;
     }
 
+    public function formatHeaders($headers) {
+        $formattedHeaders = [];
+
+        foreach ($headers as $key => $value) {
+            // Verifica si el arreglo es asociativo (clave => valor)
+            if (is_string($key)) {
+                // Convierte la clave y el valor al formato "Nombre: Valor"
+                $formattedHeaders[] = "$key: $value";
+            } else {
+                // Si ya está en el formato correcto, solo agrégalo
+                $formattedHeaders[] = $value;
+            }
+        }
+
+        return $formattedHeaders;
+    }
+
     /**
      * Sends the HTTP request and returns a Response object.
      *
@@ -187,12 +205,26 @@ trait Curl
     {
         $options = $this->prepareCurlOptions();
 
+
+
         if ($this->multicurl) {
             return $this->executeMultiCurl($options);
         } else {
             return $this->executeSingleCurl($options);
         }
     }
+
+    public function getResolves(): ?array
+    {
+        if ($this->resolveDomain) {
+            $host = $this->resolveDomain['host'];
+            $port = $this->resolveDomain['port'];
+            $ip = $this->resolveDomain['ip'];
+            return ["$host:$port:$ip"];
+        }
+        return null;
+    }
+
 
     /**
      * Prepares cURL options based on configured settings.
@@ -201,16 +233,22 @@ trait Curl
      */
     protected function prepareCurlOptions(): array
     {
+
+        $resolves = $this->getResolves();
         $options = [
             CURLOPT_TIMEOUT => $this->ch_options['timeout'],
             CURLOPT_RETURNTRANSFER => $this->ch_options['return_transfer'],
             CURLOPT_SSL_VERIFYPEER => ($this->ch_options['ssl_verify_peer'] ?? $this->ch_options['ssl_verifypeer']),
+            CURLOPT_SSL_VERIFYHOST => ($this->ch_options['ssl_verify_host'] ?? $this->ch_options['ssl_verify_host']),
             CURLOPT_ENCODING => $this->ch_options['encondig'],
             CURLOPT_HTTP_VERSION => $this->ch_options['http_version'],
             CURLOPT_USERAGENT => $this->ch_options['user-agent'],
             CURLOPT_FOLLOWLOCATION => $this->ch_options['follow'],
             CURLOPT_MAXREDIRS => $this->ch_options['max_redirs'],
+            CURLOPT_RESOLVE => $resolves ?: [],
+
         ];
+
 
         foreach ($this->options as $name => $value) {
             $options[$name] = $value;
@@ -232,7 +270,8 @@ trait Curl
         }
 
         if (!empty($this->headers)){
-            $options[CURLOPT_HTTPHEADER] = $this->getHeaders();
+
+            $options[CURLOPT_HTTPHEADER] = $this->formatHeaders($this->getHeaders());
         }
 
         if ($this->useCookie && !empty($this->cookiename)) {
@@ -370,8 +409,14 @@ trait Curl
         $response->setBody($responseContent);
         $response->setStatus($statusCode);
 
+        $connectedIp = curl_getinfo($ch, CURLINFO_PRIMARY_IP);
+
+        $response->setRemoteIP($connectedIp);
+
+
         if ($statusCode >= 300 && $statusCode <= 399) {
             $response->setRedirectUrl(curl_getinfo($ch, CURLINFO_REDIRECT_URL));
+
         }
 
         $response->setETA(microtime(true) - $this->etatime);

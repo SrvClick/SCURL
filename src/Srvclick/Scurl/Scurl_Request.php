@@ -24,6 +24,7 @@ class Scurl_Request
     protected array $headers = [];
     protected array $parameters = [];
 
+    protected ?array $resolveDomain = null;
     protected bool $multicurl = false;
 
     public static int $sock5 = CURLPROXY_SOCKS5;
@@ -33,6 +34,10 @@ class Scurl_Request
         return $this->sendRequest();
     }
 
+    public function setResolveDomain(?array $params) : void
+    {
+        $this->resolveDomain = $params;
+    }
     public function setMulticurl(bool $multicurl = true) : void
     {
         $this->multicurl = $multicurl;
@@ -46,6 +51,7 @@ class Scurl_Request
             'options' => $this->options,
             'configs' => $this->configs,
             'parameters' => $this->parameters,
+            'headers' => $this->headers
         ];
     }
 
