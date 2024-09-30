@@ -295,7 +295,7 @@ trait Curl
         }
 
         if ($this->useCookie && !empty($this->cookiename)) {
-            echo "Usando cookie\n";
+
             if (!is_dir(__DIR__ . "/cookies")) {
                 mkdir(__DIR__ . "/cookies", 0777);
             }
