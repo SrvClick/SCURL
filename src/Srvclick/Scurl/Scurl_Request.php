@@ -17,12 +17,13 @@ class Scurl_Request
     protected bool $useCookie = false;
     protected string $url;
     protected array $urls;
-    protected string $cookiename;
+    protected ?string $cookiename;
     protected string $method;
     protected array $options = [];
     protected array $configs = [];
     protected array $headers = [];
     protected array $parameters = [];
+
 
     protected ?array $resolveDomain = null;
     protected bool $multicurl = false;

@@ -1,6 +1,8 @@
 <?php
 namespace Srvclick\Scurl;
 
+use PhpParser\Node\Expr\Cast\Object_;
+
 trait Verbose
 {
 
@@ -10,16 +12,17 @@ trait Verbose
 
         //print_r($this->request);
 
-        print_r(array(
+        $verbose = (array(
                 'Request' => (Object) [
-                'URL' => $this->request->url,
-                'METHOD' => $this->request->method,
-                'PARAMETERS' => $this->request->parameters,
-                'CONFIGS' => (Object) $this->request->configs,
-                'OPTIONS' => (Object) $this->request->options,
-                "PROXY" => $this->proxy,
-                    'HEADERS' => $this->request->headers
-            ],
+                    'URL' => $this->request->url,
+                    'METHOD' => $this->request->method,
+                    'PARAMETERS' => $this->request->parameters,
+                    'CONFIGS' => (Object) $this->request->configs,
+                    'OPTIONS' => (Object) $this->request->options,
+                    "PROXY" => $this->proxy,
+                    'HEADERS' => $this->request->headers,
+                    'COOKIEEXTRA' => $this->cookieExtra
+                ],
             'RESPONSE' => (Object) [
                 'BODY' => $this->body,
                 'HTTP_CODE' => $this->status,
@@ -28,9 +31,11 @@ trait Verbose
                 "ETATIME" => $this->etatime,
                 "COOKIES" => $this->cookies ?? "nothing",
                 'HEADERS' => $this->request->headers ?? "nothing",
-
             ]
         )
         );
+
+
+        print_r($verbose);
     }
 }

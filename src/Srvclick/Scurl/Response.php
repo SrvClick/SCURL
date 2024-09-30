@@ -1,6 +1,8 @@
 <?php
 namespace Srvclick\Scurl;
 
+use PhpParser\Node\Expr\Cast\Object_;
+
 class Response
 {
     use Verbose;
@@ -8,13 +10,27 @@ class Response
     protected object $request, $cookies;
     protected array $proxy;
     protected $headers;
+    protected ?array $cookieExtra = null;
     protected ?string $remoteIP= null;
+    protected ?array $responsedCookiesRaw = null;
 
 
 
     protected ?string $nipResponse = null;
     protected ?string $nip = null;
 
+    public function getResponsedCookiesRaw(): ?array
+    {
+        return $this->responsedCookiesRaw;
+    }
+    public function setResponsedCookiesRaw(array $cookies) : void
+    {
+        $this->responsedCookiesRaw = $cookies;
+    }
+    public function setExtraCookies(array $cookieExtra) : void
+    {
+        $this->cookieExtra = (array) $cookieExtra;
+    }
     public function setRemoteIP(string $remoteIP) : void
     {
         $this->remoteIP = $remoteIP;
@@ -74,8 +90,6 @@ class Response
 
     public function getResponseCoookies($i=0): array
     {
-
-
         return $this->responseCookies[$i];
     }
     public function getRedirectUrl($i = 0) : string{

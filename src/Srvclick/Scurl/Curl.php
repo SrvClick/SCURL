@@ -23,7 +23,19 @@ trait Curl
     protected bool $isArrayParams = false;
     protected array $downloadPath = [];
     protected array $downloadName = [];
+    protected array $cookieExtra = [];
+    protected array $responsedCookiesRaw = [];
+    public function reset(): void
+    {
+        $this->parameters = [];
 
+    }
+
+    public function addCookieExtra(array $cookie) : void
+    {
+        $this->cookieExtra = $cookie;
+
+    }
     /**
      * Configures download path and name.
      *
@@ -66,6 +78,11 @@ trait Curl
         }
         $this->url = $url;
         return true;
+    }
+
+    public function getUrl() : string
+    {
+        return $this->url;
     }
 
     /**
@@ -157,6 +174,8 @@ trait Curl
     {
         $this->parameters[] = is_array($params) ? http_build_query($params) : $params;
     }
+
+
 
     /**
      * Sets request parameters as an array.
@@ -262,6 +281,7 @@ trait Curl
             }
         }
 
+
         foreach ($this->headers as $header) {
             if (preg_match('/^[Uu]ser-[Aa]gent\s*:\s*(.*)$/i', $header, $matches)) {
                 $options[CURLOPT_USERAGENT] = trim($matches[1]);
@@ -275,13 +295,24 @@ trait Curl
         }
 
         if ($this->useCookie && !empty($this->cookiename)) {
+            echo "Usando cookie\n";
             if (!is_dir(__DIR__ . "/cookies")) {
                 mkdir(__DIR__ . "/cookies", 0777);
             }
             $options[CURLOPT_COOKIEJAR] = __DIR__ . "/cookies/" . $this->cookiename;
             $options[CURLOPT_COOKIEFILE] = __DIR__ . "/cookies/" . $this->cookiename;
         }
+        if (count($this->cookieExtra) > 0){
+            $extra_cookies = '';
+            foreach ($this->cookieExtra as $key => $value) {
+                $extra_cookies .= $key . '=' . urlencode($value) . '; ';
+            }
+            $extra_cookies = rtrim($extra_cookies, '; ');
 
+            $options[CURLOPT_COOKIE] = (String)$extra_cookies;
+
+
+        }
         $options[CURLOPT_HEADER] = (int)$this->interceptCookies;
 
         if (isset($this->ch_options['http_auth']) && isset($this->ch_options['http_user']) && isset($this->ch_options['http_pass'])) {
@@ -392,12 +423,42 @@ trait Curl
                 "cookieName" => $this->cookiename,
                 "cookiePath" => __DIR__ . "/cookies/" . $this->cookiename
             ]);
+
+            if (count($this->cookieExtra) > 0) {
+                $response->setExtraCookies($this->cookieExtra);
+            }
         }
+
 
         if ($responseContent) {
             if ($this->interceptCookies) {
                 preg_match_all('/Set-Cookie:(?<cookie>\s*.*)$/im', $responseContent, $cookies);
                 $response->setResponseCookies($cookies[0]);
+
+
+                $responseCookies = $response->getResponseCoookies();
+
+                $cookiesArray = [];
+
+
+                foreach ($responseCookies as $cookie) {
+                    $cookie = preg_replace('/^set-cookie:\s*/i', '', $cookie);
+                    $equalPos = strpos($cookie, '=');
+                    if ($equalPos !== false) {
+                        $cookieName = substr($cookie, 0, $equalPos);
+                        $cookieValue = explode(';', substr($cookie, $equalPos + 1))[0];
+                        $cookieName = trim($cookieName);
+                        $cookieValue = trim($cookieValue);
+                        if (!empty($cookieValue)) {
+                            $cookiesArray[$cookieName] = $cookieValue;
+                        }
+                    }
+                }
+
+                $this->responsedCookiesRaw = array_merge($this->responsedCookiesRaw, $cookiesArray);
+
+                $response->setResponsedCookiesRaw($this->responsedCookiesRaw);
+
                 $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
                 $response->setHeader(substr($responseContent, 0, $headerSize));
                 $responseContent = substr($responseContent, $headerSize);
