@@ -1,7 +1,6 @@
 <?php
 namespace Srvclick\Scurl;
 
-use PhpParser\Node\Expr\Cast\Object_;
 
 class Response
 {
@@ -14,11 +13,21 @@ class Response
     protected ?string $remoteIP= null;
     protected ?array $responsedCookiesRaw = null;
 
+    protected ?string $dumpCurl = null;
+
 
 
     protected ?string $nipResponse = null;
     protected ?string $nip = null;
 
+    public function setDump(?string $dump)
+    {
+        $this->dumpCurl = $dump;
+    }
+    public function getDump() : ?string
+    {
+        return $this->dumpCurl;
+    }
     public function getResponsedCookiesRaw(): ?array
     {
         return $this->responsedCookiesRaw;

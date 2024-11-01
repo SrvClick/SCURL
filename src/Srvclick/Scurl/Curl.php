@@ -25,10 +25,16 @@ trait Curl
     protected array $downloadName = [];
     protected array $cookieExtra = [];
     protected array $responsedCookiesRaw = [];
+
+    protected ?string $curlDump = null;
     public function reset(): void
     {
         $this->parameters = [];
 
+    }
+    public function getDump()
+    {
+        return $this->curlDump;
     }
 
     public function addCookieExtra(array $cookie) : void
@@ -344,11 +350,86 @@ trait Curl
         curl_setopt_array($ch, $options);
 
         $response = $this->processCurlResponse( $ch);
+
+        $this->curlDump = $this->dump_curl_request($ch);
         curl_close($ch);
 
         return $response;
     }
 
+
+
+    public function dump_curl_request($ch) {
+        // Obtener toda la información del manejador cURL
+        $info = curl_getinfo($ch);
+
+        // Comenzar a construir el comando curl
+        $command = "curl";
+
+        // Manejar la URL
+        if (!empty($info['url'])) {
+            $command .= " '" . $info['url'] . "'";
+        }
+
+        // Manejar encabezados
+        $headers = curl_getinfo($ch, CURLINFO_HEADER_OUT);
+        if (!empty($headers)) {
+            foreach (explode("\n", $headers) as $header) {
+                if (trim($header)) {
+                    $command .= " -H '" . trim($header) . "'";
+                }
+            }
+        }
+
+        // Manejar cookies
+        $cookieFile = tempnam(sys_get_temp_dir(), 'cookie'); // Obtener archivo temporal para cookies
+        if ($cookieFile) {
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+            $command .= " --cookie '" . $cookieFile . "'";
+        }
+
+        // Manejar el método POST y datos enviados
+        if (isset($info['request_method']) && $info['request_method'] == 'POST') {
+            $command .= " -X POST";
+
+            // Obtener datos POST si los hay
+            $postfields = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+            if (!empty($postfields)) {
+                $command .= " -d '" . json_encode($postfields) . "'";
+            }
+        }
+
+        // Manejar uso de proxy
+        if (isset($curl_options[CURLOPT_PROXY])) {
+            $command .= " --proxy '" . $curl_options[CURLOPT_PROXY] . "'";
+        }
+
+        // Manejar autenticación
+        if (isset($curl_options[CURLOPT_USERPWD])) {
+            $command .= " --user '" . $curl_options[CURLOPT_USERPWD] . "'";
+        }
+        // Manejar timeout
+        if (isset($curl_options[CURLOPT_TIMEOUT])) {
+            $command .= " --max-time '" . $curl_options[CURLOPT_TIMEOUT] . "'";
+        }
+
+
+        // Manejar configuración de SSL
+        if (isset($curl_options[CURLOPT_SSL_VERIFYPEER]) && !$curl_options[CURLOPT_SSL_VERIFYPEER]) {
+            $command .= " --insecure";
+        }
+
+
+        // Otros métodos HTTP (por ejemplo, PUT, DELETE)
+        if (isset($curl_options[CURLOPT_CUSTOMREQUEST])) {
+            $command .= " -X '" . $curl_options[CURLOPT_CUSTOMREQUEST] . "'";
+        }
+
+
+        // Devolver el comando completo
+        return $command;
+    }
     /**
      * Executes multiple cURL requests concurrently.
      *
@@ -417,6 +498,10 @@ trait Curl
             $response->setError(curl_error($ch));
         }
 
+
+        if (!is_null($this->curlDump)){
+            $response->setDump($this->curlDump);
+        }
         if ($this->useCookie) {
             $response->setCookie([
                 "useCookie" => $this->useCookie,
