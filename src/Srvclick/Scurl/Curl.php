@@ -351,7 +351,7 @@ trait Curl
 
         $response = $this->processCurlResponse( $ch);
 
-        $this->curlDump = $this->dump_curl_request($ch);
+        //$this->curlDump = $this->dump_curl_request($ch);
         curl_close($ch);
 
         return $response;
