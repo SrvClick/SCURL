@@ -481,18 +481,7 @@ trait Curl
         $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         $response = new Response;
-        if ($this->download) {
-            if ($statusCode != 200) {
-                $response->setError("No se encontró el fichero.");
-                return $response;
-            }
-            if (!is_dir($this->downloadPath[0])) {
-                mkdir($this->downloadPath[0], 0777);
-            }
-            if (file_put_contents($this->downloadPath[0] . "/" . $this->downloadName[0], $responseContent, FILE_APPEND) === false) {
-                $response->setError("No se logró guardar el archivo");
-            }
-        }
+
 
         if ($responseContent === false) {
             $response->setError(curl_error($ch));
@@ -547,6 +536,19 @@ trait Curl
                 $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
                 $response->setHeader(substr($responseContent, 0, $headerSize));
                 $responseContent = substr($responseContent, $headerSize);
+            }
+        }
+
+        if ($this->download) {
+            if ($statusCode != 200) {
+                $response->setError("No se encontró el fichero.");
+                return $response;
+            }
+            if (!is_dir($this->downloadPath[0])) {
+                mkdir($this->downloadPath[0], 0777);
+            }
+            if (file_put_contents($this->downloadPath[0] . "/" . $this->downloadName[0], $responseContent, FILE_APPEND) === false) {
+                $response->setError("No se logró guardar el archivo");
             }
         }
 
